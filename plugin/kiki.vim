@@ -224,13 +224,15 @@ function! kiki#scratchpad_open()
     if !isdirectory(dir)
         call mkdir(dir, 'p')
     endif
-    " Create the file if it doesn't exist yet (this will allow editing even when the file doesn't exist)
-    if !filereadable(scratch_path)
-        " Create empty file for editing
-        execute 'edit' scratch_path
-    else
-        execute 'edit' scratch_path
+    
+    " Open scratchpad silently without prompts using the silent command
+    execute 'silent edit' scratch_path
+    
+    " If the file is new and doesn't have content, put in a helpful comment
+    if line('$') == 1 && getline(1) =~ '^$'
+        call setline(1, "\" Kiki Scratchpad - Edit this file to store notes and temporary content")
     endif
+    
     " Exit Kiki mode after execution
     call kiki#exit_mode()
 endfunction
