@@ -191,7 +191,13 @@ function! kiki#filesystem_edit_current()
     " Direct implementation instead of autoload to avoid issues
     let path = kiki#select_after_prefix()
     if path != ''
-        execute 'edit' path
+        " Resolve relative paths properly using expand() and fnamemodify()
+        let resolved_path = expand(path, 1)
+        if !filereadable(resolved_path) && !isdirectory(resolved_path)
+            echo "File not found: " . path
+            return
+        endif
+        execute 'edit' resolved_path
     else
         echo "No path detected"
     endif
@@ -207,7 +213,13 @@ function! kiki#scratchpad_open()
     if !isdirectory(dir)
         call mkdir(dir, 'p')
     endif
-    execute 'edit' scratch_path
+    " Create the file if it doesn't exist yet (this will allow editing even when the file doesn't exist)
+    if !filereadable(scratch_path)
+        " Create empty file for editing
+        execute 'edit' scratch_path
+    else
+        execute 'edit' scratch_path
+    endif
     " Exit Kiki mode after execution
     call kiki#exit_mode()
 endfunction
