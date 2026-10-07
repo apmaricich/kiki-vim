@@ -25,7 +25,12 @@ $ ln -s /path/to/kiki-vim/plugin/kiki.vim ~/.vim/plugin/
 
 Or using a plugin manager like vim-plug:
 ```
-Plug 'path/to/kiki-vim'
+Plug 'apmaricich/kiki-vim'
+```
+
+Or using Vundle:
+```
+Plugin 'apmaricich/kiki-vim'
 ```
 
 Once installed, you can optionally bind the kiki mode to a key combination in your .vimrc:
