@@ -63,14 +63,30 @@ endfunction
 
 " Insert kiki prefix at cursor position
 function! kiki#insert_prefix()
-    normal! a
-    call feedkeys(g:kiki_prefix, 'n')
+    " Get current line content and cursor position (1-based)
+    let line_content = getline('.')
+    let cursor_pos = col('.')  " col() returns 1-based position
+    
+    " Insert prefix at current cursor position using string replacement
+    let prefix = g:kiki_prefix
+    let new_line = strpart(line_content, 0, cursor_pos - 1) . prefix . strpart(line_content, cursor_pos - 1)
+    
+    " Replace the line with the modified content
+    call setline('.', new_line)
+    
+    " Move cursor to after the inserted prefix (cursor position + length of prefix)
+    call cursor(line('.'), cursor_pos + len(prefix))
 endfunction
 
 " Insert kiki prefix on current line
 function! kiki#insert_prefix_on_line()
-    normal! ^i
-    call feedkeys(g:kiki_prefix, 'n')
+    " Simply prepend the prefix at the beginning of current line
+    let prefix = g:kiki_prefix
+    let line_content = getline('.')
+    call setline('.', prefix . line_content)
+    
+    " Move cursor to end of prefix (1-based position)
+    call cursor(line('.'), len(prefix) + 1)
 endfunction
 
 " Select text after the kiki prefix
@@ -94,11 +110,20 @@ function! kiki#execute_inline()
     if command != ''
         " Direct implementation instead of autoload to avoid issues
         let output = system(command)
-        normal! a
-        call feedkeys("\n" . output, 'n')
+        
+        " Move cursor to end of current line and get the line content
+        normal! $
+        
+        " Add a newline for clean separation
+        normal! o
+        
+        " Insert the output directly without using feedkeys (which can be problematic)
+        call append(line('.'), split(output, '\n'))
     else
         echo "No command found after prefix"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 " Execute command to scratch buffer - direct implementation
@@ -120,6 +145,8 @@ function! kiki#execute_scratch()
     else
         echo "No command found after prefix"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 " Execute command in background - direct implementation
@@ -132,6 +159,8 @@ function! kiki#execute_background()
     else
         echo "No command found after prefix"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 " File system operations - using the function names that match file structure
@@ -154,6 +183,8 @@ function! kiki#filesystem_ls_current()
     else
         echo "No path detected"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 function! kiki#filesystem_edit_current()
@@ -164,6 +195,8 @@ function! kiki#filesystem_edit_current()
     else
         echo "No path detected"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 " Scratchpad operations - direct implementation
@@ -175,6 +208,8 @@ function! kiki#scratchpad_open()
         call mkdir(dir, 'p')
     endif
     execute 'edit' scratch_path
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
 
 " Topic operations - direct implementation
@@ -192,4 +227,6 @@ function! kiki#topics_open()
     else
         echo "No topic specified"
     endif
+    " Exit Kiki mode after execution
+    call kiki#exit_mode()
 endfunction
