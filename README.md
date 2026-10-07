@@ -1,6 +1,6 @@
 # Kiki - Kakoune-inspired Shell Integration for Vim
 
-[![GitHub](https://img.shields.io/github/license/apmaricich/kiki-vim)](https://github.com/apmaricich/kiki-vim/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/apmaricich/kiki-vim)](https://github.com/apmaricich/kiki-vim/LICENSE)
 [![GitHub last commit](https://img.shields.io/github/last-commit/apmaricich/kiki-vim)](https://github.com/apmaricich/kiki-vim/commits/main)
 
 Kiki is a Vim plugin that provides advanced shell integration, bringing the power of Kakoune's multi-cursor editing to Vim. It enables seamless interaction with your native shell without leaving the comfort of your editor, reducing context switching and improving workflow efficiency.
