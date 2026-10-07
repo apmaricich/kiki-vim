@@ -1,46 +1,65 @@
 # Kiki - Kakoune-inspired Shell Integration for Vim
 
-Kiki is a Vim plugin that provides advanced interactions with your native shell without leaving the comfort of your editor. It was designed to lessen the number of times you need to switch between your text editor and your terminal, as well as provide a simple workflow for getting things done.
+[![GitHub](https://img.shields.io/github/license/apmaricich/kiki-vim)](https://github.com/apmaricich/kiki-vim/blob/main/LICENSE)
+[![GitHub last commit](https://img.shields.io/github/last-commit/apmaricich/kiki-vim)](https://github.com/apmaricich/kiki-vim/commits/main)
 
-**Kiki provides the following functionality:**
- - Execution of shell commands from within the editor. Output can be saved to:
-   - Inline (in current document)
-   - Scratch buffer
-   - Background thread
- - Shell commands & output can be saved to any file allowing the creation of:
-   - Documentation that is executable.
- - File and directory path detection.
- - `ls -al` the current detected path.
- - `:edit` the current detected path.
- - Allows the creation and storage of persistent topic files that can be used
-   to store generic information.
- - Access to a persistent scratchpad that can be opened with a simple shortcut.
+Kiki is a Vim plugin that provides advanced shell integration, bringing the power of Kakoune's multi-cursor editing to Vim. It enables seamless interaction with your native shell without leaving the comfort of your editor, reducing context switching and improving workflow efficiency.
 
-## Installing the plugin:
+## Features
 
-To install the plugin, link or copy the file to Vim's autoload directory:
-```
-$ ln -s /path/to/kiki-vim/plugin/kiki.vim ~/.vim/plugin/
+- **Shell Command Execution**: Execute shell commands directly from within Vim
+  - Output can be displayed inline (in current document)
+  - Output can be saved to scratch buffers
+  - Commands can run in background threads
+- **Executable Documentation**: Save shell commands and their output to files for creating executable documentation
+- **Path Detection**: Automatic file and directory path detection
+- **File Operations**: 
+  - `ls -alh` the current detected path
+  - `:edit` files at current detected paths
+- **Persistent Storage**: 
+  - Create and manage persistent topic files for storing generic information
+  - Access to a persistent scratchpad with simple keyboard shortcuts
+
+## Installation
+
+### Using vim-plug (Recommended)
+
+Add the following line to your `.vimrc`:
+
+```vim
+Plug 'apmaricich/kiki-vim'
 ```
 
-Or using a plugin manager like vim-plug:
-```
-Plug 'path/to/kiki-vim'
+Then run `:PlugInstall` in Vim.
+
+### Manual Installation
+
+Link or copy the plugin file to Vim's autoload directory:
+
+```bash
+ln -s /path/to/kiki-vim/plugin/kiki.vim ~/.vim/plugin/
 ```
 
-Once installed, you can optionally bind the kiki mode to a key combination in your .vimrc:
-```
-" Enter kiki mode when you press \k
-map \k :KikiEnter<CR>
-```
+## Getting Started
+
+1. Install the plugin using one of the methods above
+2. Add the following key binding to your `.vimrc`:
+   ```vim
+   " Enter kiki mode when you press \k
+   map \k :KikiEnter<CR>
+   ```
+3. Start using Kiki by placing a command on a line with the prefix (default: `kiki `):
+   ```
+   kiki echo $PATH
+   ```
 
 ## Usage
 
+### Command Execution
+
 Kiki works by identifying shell commands on the current line using a configurable prefix (default: `kiki `).
 
-### Executing a command:
-
-To execute a command, place your cursor on a line containing:
+**Execute a command** by placing your cursor on a line containing:
 ```
 kiki echo $PATH
 ```
@@ -50,19 +69,19 @@ Then use one of the following key mappings (after entering Kiki mode with `\k`):
 - `<i>`: Execute and return inline
 - `<s>`: Execute and return in scratch buffer  
 - `<b>`: Execute in background
-- `<l>`: ls -alh current path
+- `<l>`: `ls -alh` current path
 - `<e>`: Edit file at current path
 - `<t>`: Open topic file with name
 - `<,>`: Open scratchpad
 
-### Quick command insertion:
+### Quick Command Insertion
 
 - `<c>`: Insert prefix and enter insert mode for a new command
 - `<C>`: Insert prefix on existing line
 
 ## Configuration
 
-You can configure Kiki by setting these variables in your .vimrc:
+Customize Kiki behavior by setting these variables in your `.vimrc`:
 
 ```vim
 " Change the kiki prefix (must be unique to avoid conflicts)
@@ -74,3 +93,7 @@ let g:kiki_scratch = "~/.config/vim/kiki/scratchpad.kiki"
 " Set topics directory location  
 let g:kiki_topics = "~/.config/vim/kiki/"
 ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
