@@ -100,7 +100,18 @@ function! kiki#select_after_prefix()
         let command = strpart(line, pos + len(prefix))
         return command
     endif
-
+    
+    " If no prefix found, try to detect file paths anywhere in the line (simple approach)
+    " Just look for simple path patterns without complex regex matching
+    let words = split(line, '\s\+')
+    for word in words
+        " Check if it looks like a file path (has an extension or relative/absolute path structure)
+        if word =~ '^\./' || word =~ '^../' || word =~ '^/' || word =~ '^[^/]\+\.\w\+$'
+            return word
+        endif
+    endfor
+    
+    " If no path found at all, return empty string as before
     return ''
 endfunction
 
